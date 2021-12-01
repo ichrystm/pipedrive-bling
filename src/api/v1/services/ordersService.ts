@@ -1,11 +1,10 @@
-import createError from 'http-errors';
 import DealsService from './dealsService';
 import buildOrderPayload from '../../../utils/buildOrder';
 import BlingApi from '../../../services/bling/api';
 import messages from '../../../utils/messages';
 import logger from '../../../utils/logger';
 
-class OrdersService {
+export default class OrdersService {
   private dealsService: DealsService;
 
   private blingApi: BlingApi;
@@ -18,7 +17,7 @@ class OrdersService {
   async createOrders() {
     const deals = await this.dealsService.getAllWonDeals();
 
-    const orders = await Promise.all(
+    await Promise.all(
       deals.map(async (deal: any) => {
         // find duplicity in db
 
@@ -26,16 +25,12 @@ class OrdersService {
         const xml = buildOrderPayload(deal);
         if (!xml) {
           logger.error(`CreateOrder error: ${messages.createXmlError}`);
-          throw createError(400, messages.createXmlError);
+          return null;
         }
 
         const response = await this.blingApi.createOrder(xml);
-        return response.data;
+        return response.data.retorno.pedidos;
       }),
     );
-
-    return orders;
   }
 }
-
-export default new OrdersService();
