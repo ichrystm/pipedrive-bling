@@ -9,6 +9,9 @@ export default class DealsService {
 
   async getAllWonDeals() {
     const response = await this.pipedriveApi.getAllWonDeals();
+    if (!response) {
+      return [];
+    }
     return response.data.data;
   }
 }
