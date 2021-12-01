@@ -1,11 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
-import DealsService from './dealsService';
+import DealsService, { IProviderDeal } from './dealsService';
 import buildOrderPayload from '../../../utils/buildOrder';
 import BlingApi from '../../../services/bling/api';
 import messages from '../../../utils/messages';
 import logger from '../../../utils/logger';
 import Order from '../models/order';
 
+interface IProviderOrder {
+  numero: string,
+  idPedido: number,
+  idContato: number,
+}
 export default class OrdersService {
   private dealsService: DealsService;
 
@@ -36,9 +41,9 @@ export default class OrdersService {
     const currentOrder = await Order.findOne({ processedAt: `${today}T00:00:00.000Z` });
 
     await Promise.all(
-      deals.map(async (deal: any) => {
+      deals.map(async (deal: IProviderDeal) => {
         if (deal.status !== 'won' || deal.won_time.split(' ')[0] !== today
-        || (currentOrder && currentOrder.providerIdList.some((id: string) => id === deal.id))) {
+        || (currentOrder && currentOrder.providerIdList.some((id: number) => id === deal.id))) {
           return null;
         }
 
@@ -53,7 +58,7 @@ export default class OrdersService {
           return null;
         }
 
-        const providerOrder = response.data.retorno.pedidos
+        const providerOrder: IProviderOrder = response.data.retorno.pedidos
           ? response.data.retorno.pedidos[0].pedido : null;
 
         if (!providerOrder) {

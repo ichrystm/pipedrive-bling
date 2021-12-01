@@ -1,11 +1,38 @@
 import { parse } from 'js2xmlparser';
+import { IProviderDeal } from '../api/v1/services/dealsService';
 
-const buildOrderPayload = (deal: any) => {
+interface IClientPaylod {
+  nome: string,
+  tipoPessoa: string,
+  email: string,
+}
+
+interface IItemPayload {
+  codigo: number,
+  descricao: string,
+  un: string,
+  qtde: number,
+  vlr_unit: number,
+}
+
+interface IItemsPayload {
+  item: IItemPayload
+}
+
+interface IRequestPaylod {
+  cliente: IClientPaylod,
+  itens: IItemsPayload[]
+}
+interface IOrderPayload {
+  pedido: IRequestPaylod
+}
+
+const buildOrderPayload = (deal: IProviderDeal) => {
   if (!deal.person_id.name || !deal.person_id.email) {
     return null;
   }
 
-  const order = {
+  const order: IOrderPayload = {
     pedido: {
       cliente: {
         nome: deal.person_id.name,
