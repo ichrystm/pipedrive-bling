@@ -24,11 +24,16 @@ export default class OrdersService {
   async createOrders() {
     const deals = await this.dealsService.getAllWonDeals();
 
+    if (!deals) {
+      logger.warn(`CreateOrders skip: ${messages.noWonDealsFound}`);
+      return;
+    }
+
     await Promise.all(
       deals.map(async (deal: any) => {
         const currentOrder = await Order.findOne({ code: deal.id });
         if (currentOrder) {
-          logger.warn(`CreateOrder skippig: ${messages.orderDuplicity} ${deal.id}`);
+          logger.warn(`CreateOrder skip: ${messages.orderDuplicity} ${deal.id}`);
           return null;
         }
 
