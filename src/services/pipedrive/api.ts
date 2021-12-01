@@ -17,7 +17,7 @@ export default class PipedriveApi {
   public async getAllWonDeals() {
     const response = this.pipedriveApi.get(`/deals?status=won&api_token=${this.apiToken}`)
       .catch((err) => {
-        logger.error(err.response.data);
+        logger.error(`PipeDriveApi error: ${err.response.data}`);
         return null;
       });
     return response;

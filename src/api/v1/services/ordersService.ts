@@ -44,11 +44,15 @@ export default class OrdersService {
         }
 
         const response = await this.blingApi.createOrder(xml);
+        if (!response) {
+          return null;
+        }
+
         const providerOrder = response.data.retorno.pedidos
           ? response.data.retorno.pedidos[0].pedido : null;
 
         if (!providerOrder) {
-          logger.error(`CreateOrder error: ${messages.createOrderError} ${deal.id}`);
+          logger.error(`CreateOrder error: ${messages.createOrderError} ${deal.id}. Please, review the deal infos.`);
           return null;
         }
 
