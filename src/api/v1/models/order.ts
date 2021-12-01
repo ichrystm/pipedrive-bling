@@ -25,6 +25,10 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  wonnedAt: {
+    type: Date,
+    required: true,
+  },
 });
 
 export default mongoose.model('Order', orderSchema);

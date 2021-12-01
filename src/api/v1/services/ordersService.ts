@@ -18,7 +18,7 @@ export default class OrdersService {
 
   // eslint-disable-next-line class-methods-use-this
   async getOrders() {
-    return Order.find();
+    return Order.find().sort([['wonnedAt', -1]]);
   }
 
   async createOrders() {
@@ -54,6 +54,7 @@ export default class OrdersService {
           code: deal.id,
           quantity: 1,
           unitValue: deal.weighted_value,
+          wonnedAt: new Date(deal.won_time),
         });
 
         await order.save();
