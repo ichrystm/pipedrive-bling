@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import Config from '../../config';
+import logger from '../../utils/logger';
 
 export default class PipedriveApi {
   private apiToken: string;
@@ -14,6 +15,11 @@ export default class PipedriveApi {
   }
 
   public async getAllWonDeals() {
-    return this.pipedriveApi.get(`/deals?status=won&api_token=${this.apiToken}`);
+    const response = this.pipedriveApi.get(`/deals?status=won&api_token=${this.apiToken}`)
+      .catch((err) => {
+        logger.error(err.response.data);
+        return null;
+      });
+    return response;
   }
 }
