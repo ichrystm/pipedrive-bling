@@ -18,7 +18,7 @@ export default class OrdersService {
 
   // eslint-disable-next-line class-methods-use-this
   async getOrders() {
-    return Order.find().sort([['wonnedAt', -1]]);
+    return Order.find().sort([['processedAt', -1]]);
   }
 
   async createOrders() {
@@ -29,11 +29,12 @@ export default class OrdersService {
       return;
     }
 
+    const today = new Date().toISOString().split('T')[0];
+    let totalAmount = 0;
+
     await Promise.all(
       deals.map(async (deal: any) => {
-        const currentOrder = await Order.findOne({ code: deal.id });
-        if (currentOrder) {
-          logger.warn(`CreateOrder skip: ${messages.orderDuplicity} ${deal.id}`);
+        if (deal.status !== 'won' || deal.won_time.split(' ')[0] !== today) {
           return null;
         }
 
@@ -56,20 +57,29 @@ export default class OrdersService {
           return null;
         }
 
-        const order = new Order({
-          _id: uuidv4(),
-          orderId: providerOrder.idPedido,
-          contactId: providerOrder.idContato,
-          code: deal.id,
-          quantity: 1,
-          unitValue: deal.weighted_value,
-          wonnedAt: new Date(deal.won_time),
-        });
-
-        await order.save();
-
+        totalAmount += deal.weighted_value;
         return providerOrder;
       }),
     );
+
+    const currentOrder = await Order.findOne({ processedAt: `${today}T00:00:00.000Z` });
+
+    if (currentOrder) {
+      await Order.updateOne(
+        { _id: currentOrder.id },
+        {
+          totalAmount,
+        },
+      );
+    } else {
+      const order = new Order({
+        _id: uuidv4(),
+        title: `Wonned deals - ${today}`,
+        totalAmount,
+        processedAt: today,
+      });
+
+      await order.save();
+    }
   }
 }

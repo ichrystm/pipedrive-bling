@@ -5,27 +5,15 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  orderId: {
+  title: {
+    type: String,
+    required: true,
+  },
+  totalAmount: {
     type: Number,
     required: true,
   },
-  contactId: {
-    type: Number,
-    required: true,
-  },
-  code: {
-    type: Number,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  unitValue: {
-    type: Number,
-    required: true,
-  },
-  wonnedAt: {
+  processedAt: {
     type: Date,
     required: true,
   },
