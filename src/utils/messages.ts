@@ -7,6 +7,7 @@ const messages = {
   blingJobRunning: 'Bling job started.',
   blingJobFinished: 'Bling job finished',
   noWonDealsFound: 'No won deals found, skipping the process...',
+  newOrderCreated: 'New order created.',
 };
 
 export default messages;

@@ -31,10 +31,14 @@ export default class OrdersService {
 
     const today = new Date().toISOString().split('T')[0];
     let totalAmount = 0;
+    const idList: Number[] = [];
+
+    const currentOrder = await Order.findOne({ processedAt: `${today}T00:00:00.000Z` });
 
     await Promise.all(
       deals.map(async (deal: any) => {
-        if (deal.status !== 'won' || deal.won_time.split(' ')[0] !== today) {
+        if (deal.status !== 'won' || deal.won_time.split(' ')[0] !== today
+        || (currentOrder && currentOrder.providerIdList.some((id: string) => id === deal.id))) {
           return null;
         }
 
@@ -58,17 +62,19 @@ export default class OrdersService {
         }
 
         totalAmount += deal.weighted_value;
+        idList.push(deal.id);
+        logger.info(`CreateOrder: ${messages.newOrderCreated}`);
+
         return providerOrder;
       }),
     );
-
-    const currentOrder = await Order.findOne({ processedAt: `${today}T00:00:00.000Z` });
 
     if (currentOrder) {
       await Order.updateOne(
         { _id: currentOrder.id },
         {
           totalAmount,
+          providerIdList: currentOrder.providerIdList.concat(idList),
         },
       );
     } else {
@@ -77,6 +83,7 @@ export default class OrdersService {
         title: `Wonned deals - ${today}`,
         totalAmount,
         processedAt: today,
+        providerIdList: idList,
       });
 
       await order.save();

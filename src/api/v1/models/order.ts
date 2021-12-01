@@ -17,6 +17,10 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  providerIdList: [{
+    type: Number,
+    required: true,
+  }],
 });
 
 export default mongoose.model('Order', orderSchema);
