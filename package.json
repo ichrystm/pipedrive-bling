@@ -1,0 +1,37 @@
+{
+  "name": "pipedrive-bling-api",
+  "version": "1.0.0",
+  "description": "LinkApi test",
+  "main": "app.js",
+  "scripts": {
+    "dev": "ts-node-dev --ignore-watch node_modules --respawn --transpile-only src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ichrystm/pipedrive-bling.git"
+  },
+  "author": "Chrysler Oliveira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ichrystm/pipedrive-bling/issues"
+  },
+  "homepage": "https://github.com/ichrystm/pipedrive-bling#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.14",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
+  }
+}
