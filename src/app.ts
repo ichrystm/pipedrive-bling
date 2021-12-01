@@ -5,6 +5,7 @@ import Config from './config';
 import logger from './utils/logger';
 import Database from './database';
 import routes from './api/v1/routes';
+import './jobs';
 
 const app = express();
 
