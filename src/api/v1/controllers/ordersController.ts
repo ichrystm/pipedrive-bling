@@ -3,12 +3,6 @@ import logger from '../../../utils/logger';
 import OrdersService from '../services/ordersService';
 
 class OrdersController {
-  // private ordersServices: OrdersService;
-
-  // constructor() {
-  //   this.ordersServices = new OrdersService();
-  // }
-
   // eslint-disable-next-line class-methods-use-this
   async getOrders(req: Request, res: Response) {
     try {
@@ -18,7 +12,7 @@ class OrdersController {
       return res.status(200).send({
         orders,
       });
-    } catch (err:any) {
+    } catch (err) {
       logger.error(err);
       return res.status(500).send({
         error: err,
