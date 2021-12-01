@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import DealsService from './dealsService';
 import buildOrderPayload from '../../../utils/buildOrder';
 import BlingApi from '../../../services/bling/api';
@@ -25,9 +26,12 @@ export default class OrdersService {
 
     await Promise.all(
       deals.map(async (deal: any) => {
-        // find duplicity in db
+        const currentOrder = await Order.findOne({ code: deal.id });
+        if (currentOrder) {
+          logger.warn(`CreateOrder skippig: ${messages.orderDuplicity} ${deal.id}`);
+          return null;
+        }
 
-        // if not
         const xml = buildOrderPayload(deal);
         if (!xml) {
           logger.error(`CreateOrder error: ${messages.createXmlError}`);
@@ -35,7 +39,26 @@ export default class OrdersService {
         }
 
         const response = await this.blingApi.createOrder(xml);
-        return response.data.retorno.pedidos;
+        const providerOrder = response.data.retorno.pedidos
+          ? response.data.retorno.pedidos[0].pedido : null;
+
+        if (!providerOrder) {
+          logger.error(`CreateOrder error: ${messages.createOrderError} ${deal.id}`);
+          return null;
+        }
+
+        const order = new Order({
+          _id: uuidv4(),
+          orderId: providerOrder.idPedido,
+          contactId: providerOrder.idContato,
+          code: deal.id,
+          quantity: 1,
+          unitValue: deal.weighted_value,
+        });
+
+        await order.save();
+
+        return providerOrder;
       }),
     );
   }
