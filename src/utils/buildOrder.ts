@@ -27,7 +27,7 @@ interface IOrderPayload {
   pedido: IRequestPaylod
 }
 
-const buildOrderPayload = (deal: IProviderDeal) => {
+const buildOrderPayload = (deal: IProviderDeal): string | null => {
   if (!deal.person_id.name || !deal.person_id.email) {
     return null;
   }

@@ -10,7 +10,7 @@ class BlingJob {
     this.ordersServices = new OrdersService();
   }
 
-  async job() {
+  async job(): Promise<void> {
     return new CronJob('0 * * * * *', async () => {
       logger.info(messages.blingJobRunning);
       await this.ordersServices.createOrders();

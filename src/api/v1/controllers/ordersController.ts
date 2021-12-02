@@ -4,7 +4,7 @@ import OrdersService from '../services/ordersService';
 
 class OrdersController {
   // eslint-disable-next-line class-methods-use-this
-  async getOrders(req: Request, res: Response) {
+  async getOrders(req: Request, res: Response): Promise<Response> {
     try {
       const ordersServices = new OrdersService();
       const orders = await ordersServices.getOrders();

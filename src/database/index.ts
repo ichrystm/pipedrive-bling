@@ -10,7 +10,7 @@ class Database {
     this.authenticatedUrl = Config.databaseAuthenticatedUrl;
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     mongoose.connect(this.authenticatedUrl)
       .then(() => logger.info(messages.databaseConnected))
       .catch((err) => {

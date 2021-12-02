@@ -11,6 +11,14 @@ interface IProviderOrder {
   idPedido: number,
   idContato: number,
 }
+
+interface IOrder {
+  _id: string,
+  title: string,
+  totalAmount: number,
+  processedAt: string,
+  providerIdList: number[],
+}
 export default class OrdersService {
   private dealsService: DealsService;
 
@@ -22,11 +30,11 @@ export default class OrdersService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async getOrders() {
+  async getOrders(): Promise<IOrder[]> {
     return Order.find().sort([['processedAt', -1]]);
   }
 
-  async createOrders() {
+  async createOrders(): Promise<void> {
     const deals = await this.dealsService.getAllWonDeals();
 
     if (!deals) {

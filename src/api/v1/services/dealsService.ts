@@ -25,7 +25,7 @@ export default class DealsService {
     this.pipedriveApi = new PipedriveApi();
   }
 
-  async getAllWonDeals() {
+  async getAllWonDeals(): Promise<IProviderDeal[]> {
     const response = await this.pipedriveApi.getAllWonDeals();
     if (!response) {
       return [];

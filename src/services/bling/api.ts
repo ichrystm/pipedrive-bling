@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Config from '../../config';
 import logger from '../../utils/logger';
 
@@ -14,7 +14,7 @@ export default class BlingApi {
     });
   }
 
-  public async createOrder(xml: string) {
+  public async createOrder(xml: string): Promise<AxiosResponse | null> {
     const response = this.blingApi.post(`/pedido/json?apikey=${this.apiToken}&xml=${xml}`)
       .catch((err) => {
         logger.error(`BlingApi error: ${err.response.data.retorno.erros.erro.msg}`);
