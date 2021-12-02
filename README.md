@@ -22,7 +22,7 @@ This API was developed using the following technologies:
 # How to run
 - Docker
   1. Open the project folder
-  2. Run "docker-compose up -d"
+  2. Run "docker-compose up"
   3. The api will be available at 3020 localhost port.
 
 - Local
@@ -34,7 +34,7 @@ This API was developed using the following technologies:
 # API informations
 
 - How it works:
-This API was developed to find your wonned deals at Pipedrive CRM, automatically create a order for each of them in Bling ERP and save a report of all orders of the day in a MongoDb document (one report document per day). A Cron job is responsible for getting and dealing with this data at every 1 minute. 
+This API was developed to find your won deals at Pipedrive CRM, automatically create a order for each of them in Bling ERP and save a report of all orders of the day in a MongoDb document (one report document per day). A Cron job is responsible for getting and dealing with this data at every 1 minute. 
 
 - Logs and errors:
 If an error ocurrs, the API will notify you through a log.
