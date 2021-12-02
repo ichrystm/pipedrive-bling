@@ -44,15 +44,20 @@ If an error ocurrs, the API will notify you through a log.
 Returns a list of the created orders at Bling ERP (MongoDB database)
   
   Response example:
-  ```"orders": [
+  ```{
+    "orders": [
         {
-            "_id": "fedcf6ff-7792-4486-8c8b-07dd99c77bf8",
-            "orderId": 15430957180,
-            "contactId": 15430957175,
-            "code": 4,
-            "quantity": 1,
-            "unitValue": 0,
-            "wonnedAt": "2021-12-01T22:16:07.000Z",
+            "_id": "b80df44c-6236-4c7c-9bcc-67b0ebe4b676",
+            "title": "Wonned deals - 2021-12-01",
+            "totalAmount": 100,
+            "processedAt": "2021-12-01T00:00:00.000Z",
+            "providerIdList": [
+                4,
+                5,
+                6,
+                7
+            ],
             "__v": 0
         }
     ]
+}
